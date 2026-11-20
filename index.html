@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>บันไดงู รู้สิทธิ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="float-btns">
+    <button id="btn-fs" class="sound-btn" aria-label="เต็มจอ"></button>
+    <button id="btn-music" class="sound-btn" aria-label="เปิด/ปิดเพลง"></button>
+    <button id="btn-sound" class="sound-btn" aria-label="เปิด/ปิดเสียงเอฟเฟกต์"></button>
+  </div>
+
+  <!-- ================= หน้าเริ่มเกม ================= -->
+  <section id="screen-setup" class="screen active">
+    <div class="setup-card">
+      <img class="hero" src="assets/hero.jpg" alt="" onerror="this.remove()">
+      <h1>บันไดงู รู้สิทธิ</h1>
+      <p class="tagline">เดินไปบนเส้นทางชีวิต เจอสถานการณ์จริง เลือกวิธีแก้ให้ถูก แล้วคุณจะรู้ว่าตัวเองมีสิทธิอะไรบ้าง</p>
+
+      <div class="howto">
+        <div><span class="hi"><i data-icon="star"></i></span><span><b>กระดานสุ่มใหม่ทุกเกม</b> เรื่องที่เจอจะเลือกให้เหมาะกับอายุของผู้เล่น</span></div>
+        <div><span class="hi good"><i data-icon="ladder"></i></span><span><b>ช่องบันได</b> ตอบถูก ได้ขึ้นบันได</span></div>
+        <div><span class="hi bad"><i data-icon="snake"></i></span><span><b>ช่องงู</b> ตอบถูก รอดจากงู ตอบผิด ไถลลง</span></div>
+        <div><span class="hi tip"><i data-icon="bulb"></i></span><span><b>ช่องว่าง</b> ได้อ่านความรู้ "รู้หรือไม่"</span></div>
+        <div><span class="hi"><i data-icon="flag"></i></span><span><b>จบเกม</b> ทุกคนตอบคำถามท้ายบท แล้วดูสถิติ</span></div>
+      </div>
+
+      <label class="field-label">จำนวนผู้เล่น</label>
+      <div class="count-picker" id="count-picker">
+        <button data-n="1">1</button><button data-n="2" class="sel">2</button><button data-n="3">3</button><button data-n="4">4</button>
+      </div>
+      <div id="name-fields" class="name-fields"></div>
+
+      <p id="setup-hint" class="setup-hint">เลือกเพศและช่วงอายุของผู้เล่นทุกคนก่อนเริ่มเกม</p>
+      <button id="btn-start" class="btn primary big">เริ่มเกม</button>
+      <div class="setup-links">
+        <button class="btn ghost" data-open="stats"><i data-icon="chart"></i> สถิติของฉัน</button>
+        <button class="btn ghost" data-open="book"><i data-icon="book"></i> สมุดสิทธิ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= หน้าเกม ================= -->
+  <section id="screen-game" class="screen">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark"><i data-icon="ladder"></i></span> บันไดงู รู้สิทธิ</div>
+      <div class="top-actions">
+        <button class="btn ghost sm" data-open="book"><i data-icon="book"></i> สมุดสิทธิ</button>
+        <button class="btn ghost sm" data-open="stats"><i data-icon="chart"></i> สถิติ</button>
+        <button class="btn ghost sm" id="btn-quit"><i data-icon="exit"></i> ออก</button>
+      </div>
+    </header>
+    <main class="game-layout">
+      <div class="board-wrap">
+        <div id="board" class="board">
+          <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+          <div id="tokens"></div>
+          <div id="cell-tip" class="cell-tip hidden" role="tooltip"></div>
+        </div>
+      </div>
+      <aside class="side">
+        <div class="turn-card" id="turn-card">
+          <div class="turn-label">ตาของ</div>
+          <div class="turn-name" id="turn-name">-</div>
+          <div class="dice-stage"><div class="die" id="die"></div></div>
+          <button id="btn-roll" class="btn primary big">ทอยลูกเต๋า</button>
+          <div class="hint">กด Space เพื่อทอยได้ · ชี้หรือแตะช่องบนกระดานเพื่ออ่านความรู้</div>
+        </div>
+        <div id="tip-card" class="tip-card hidden" aria-live="polite"></div>
+        <div class="players" id="players"></div>
+        <div class="log-box">
+          <div class="log-title">เหตุการณ์ล่าสุด</div>
+          <ul id="log"></ul>
+        </div>
+      </aside>
+    </main>
+  </section>
+
+  <!-- ================= หน้าคำถามท้ายบท ================= -->
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-card">
+      <img id="quiz-art" class="quiz-art hidden" alt="" onerror="this.classList.add('hidden')">
+      <div class="quiz-head">
+        <div class="chip" id="quiz-chip">คำถามท้ายบท</div>
+        <div class="quiz-progress" id="quiz-progress"></div>
+      </div>
+      <div class="progress-bar"><span id="quiz-bar"></span></div>
+      <div class="quiz-player" id="quiz-player"></div>
+      <h2 id="quiz-q"></h2>
+      <div class="choices" id="quiz-choices"></div>
+      <div class="feedback hidden" id="quiz-feedback"></div>
+      <button class="btn primary hidden" id="quiz-next">ข้อต่อไป</button>
+    </div>
+  </section>
+
+  <!-- ================= หน้าสรุปผล ================= -->
+  <section id="screen-summary" class="screen">
+    <div class="summary-card">
+      <img class="trophy-img" src="assets/trophy.png" alt="" onerror="this.remove()">
+      <h1 id="summary-title"></h1>
+      <div class="awards" id="awards"></div>
+      <div class="table-wrap"><table class="stat-table" id="summary-table"></table></div>
+      <h3>สิทธิที่ได้เรียนรู้ในเกมนี้</h3>
+      <div class="learned" id="learned"></div>
+      <div class="summary-actions">
+        <button class="btn primary" id="btn-again">เล่นอีกครั้ง</button>
+        <button class="btn ghost" data-open="stats"><i data-icon="chart"></i> สถิติสะสม</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Modal ================= -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-box" id="modal-box"></div>
+  </div>
+
+  <script src="icons.js"></script>
+  <script src="sfx.js"></script>
+  <script src="music.js"></script>
+  <script src="fx.js"></script>
+  <script src="data.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
