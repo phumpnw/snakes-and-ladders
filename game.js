@@ -166,6 +166,7 @@ $("#count-picker").addEventListener("click", (e) => {
   renderNameFields();
 });
 renderNameFields();
+$("#privacy-note").classList.toggle("hidden", !Analytics.enabled);
 
 // ============================================================
 // สถานะเกม
@@ -253,6 +254,7 @@ function startGame() {
   log("สุ่มกระดานใหม่แล้ว! ทุกคนเริ่มก่อนช่อง 1");
   setDie(1);
   showScreen("screen-game");
+  Analytics.start(players);
   updateTurn();
 }
 $("#btn-start").addEventListener("click", () => { if (setupComplete()) startGame(); });
@@ -551,6 +553,7 @@ async function handleScenario(p, s) {
   LIFETIME.answered++;
   if (correct) LIFETIME.correct++;
   recordAnswer(p, s.category, correct);
+  Analytics.answer(p, "สถานการณ์", s.id, s.title, s.category, correct, G.players.length);
   LIFETIME.seen[s.id] = true;
 
   const i = G.players.indexOf(p);
@@ -748,6 +751,7 @@ function renderQuestion() {
     p.st.quizT++; LIFETIME.quizT++;
     if (correct) { p.st.quizC++; LIFETIME.quizC++; }
     recordAnswer(p, q.category, correct);
+    Analytics.answer(p, "ท้ายบท", "quiz-" + QUIZ.indexOf(q), q.q, q.category, correct, G.players.length);
     saveStats(LIFETIME);
     if (correct) { SFX.correct(); const c = FX.centerOf(btn); FX.confetti(c.x, c.y, 40, 0.9); FX.floatText(btn, "+10", "good"); }
     else { SFX.wrong(); FX.shake($(".quiz-card")); }
@@ -776,6 +780,7 @@ function knowledgeScore(p) {
 
 function showSummary() {
   LIFETIME.games++;
+  Analytics.finish(G.players, G.winner, knowledgeScore);
   saveStats(LIFETIME);
 
   const ps = G.players;
