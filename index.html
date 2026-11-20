@@ -2,11 +2,11 @@
 <html lang="th">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>บันไดงู รู้สิทธิ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261120d">
 </head>
 <body>
   <canvas id="fx" aria-hidden="true"></canvas>
@@ -50,11 +50,11 @@
   <!-- ================= หน้าเกม ================= -->
   <section id="screen-game" class="screen">
     <header class="topbar">
-      <div class="brand"><span class="brand-mark"><i data-icon="ladder"></i></span> บันไดงู รู้สิทธิ</div>
+      <div class="brand"><span class="brand-mark"><i data-icon="ladder"></i></span> <span class="brand-text">บันไดงู รู้สิทธิ</span></div>
       <div class="top-actions">
-        <button class="btn ghost sm" data-open="book"><i data-icon="book"></i> สมุดสิทธิ</button>
-        <button class="btn ghost sm" data-open="stats"><i data-icon="chart"></i> สถิติ</button>
-        <button class="btn ghost sm" id="btn-quit"><i data-icon="exit"></i> ออก</button>
+        <button class="btn ghost sm" data-open="book" title="สมุดสิทธิ"><i data-icon="book"></i> <span class="lbl">สมุดสิทธิ</span></button>
+        <button class="btn ghost sm" data-open="stats" title="สถิติ"><i data-icon="chart"></i> <span class="lbl">สถิติ</span></button>
+        <button class="btn ghost sm" id="btn-quit" title="ออกจากเกม"><i data-icon="exit"></i> <span class="lbl">ออก</span></button>
       </div>
     </header>
     <main class="game-layout">
@@ -121,12 +121,12 @@
     <div class="modal-box" id="modal-box"></div>
   </div>
 
-  <script src="icons.js"></script>
-  <script src="sfx.js"></script>
-  <script src="music.js"></script>
-  <script src="fx.js"></script>
-  <script src="data.js"></script>
-  <script src="analytics.js"></script>
-  <script src="game.js"></script>
+  <script src="icons.js?v=20261120d"></script>
+  <script src="sfx.js?v=20261120d"></script>
+  <script src="music.js?v=20261120d"></script>
+  <script src="fx.js?v=20261120d"></script>
+  <script src="data.js?v=20261120d"></script>
+  <script src="analytics.js?v=20261120d"></script>
+  <script src="game.js?v=20261120d"></script>
 </body>
 </html>
